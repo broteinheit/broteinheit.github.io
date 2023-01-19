@@ -13,7 +13,7 @@
                 signer = provider.getSigner();
                 console.log("Account:", signer.getAddress());
 
-                provider = provider.getNetwork().then((network) => {
+                provider.getNetwork().then((network) => {
                     if(network.name !== "goerli") {
                         provider = new ethers.providers.JsonRpcProvider('https://gorli.infura.io/v3/');
                     }
