@@ -3,25 +3,29 @@
 <head>
     <script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>
     <script>
-        if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
-            // Use the provider injected by MetaMask
-            var provider = new ethers.providers.Web3Provider(window.ethereum || window.web3.currentProvider, "any");
-            const accounts = await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-            console.log("Account:", signer.getAddress());
+        async function init() {
+            if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+                // Use the provider injected by MetaMask
+                var provider = new ethers.providers.Web3Provider(window.ethereum || window.web3.currentProvider, "any");
+                const accounts = await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                console.log("Account:", signer.getAddress());
 
-            provider = provider.getNetwork().then((network) => {
-                if(network.name !== "goerli") {
-                    provider = new ethers.providers.JsonRpcProvider('https://gorli.infura.io/v3/');
+                provider = provider.getNetwork().then((network) => {
+                    if(network.name !== "goerli") {
+                        provider = new ethers.providers.JsonRpcProvider('https://gorli.infura.io/v3/');
+                    }
+                });
+                async function getBlockHeight() {
+                    let blockHeight = await provider.getBlockNumber();
+                    document.getElementById("blockHeight").innerHTML = blockHeight;
                 }
-            });
-            async function getBlockHeight() {
-                let blockHeight = await provider.getBlockNumber();
-                document.getElementById("blockHeight").innerHTML = blockHeight;
+            } else {
+                alert("Please install MetaMask to use this feature.");
             }
-        } else {
-            alert("Please install MetaMask to use this feature.");
         }
+
+        init();
     </script>
 </head>
 <body>
