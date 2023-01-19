@@ -20,7 +20,9 @@
                 });
 
                 var contractAddress = '0x56CECaBf70A0cec3a12C624cf5a0FFaaaB494822';
-                var abi = [ "function balanceOf(address owner) returns (uint256)"];
+                var abi = [ "function name() view returns (string)",
+                        "function symbol() view returns (string)",
+                        "function balanceOf(address owner) view returns (uint256)"];
                 contract = new ethers.Contract(contractAddress, abi, provider);
             } else {
                 alert("Please install MetaMask to use this feature.");
@@ -37,7 +39,7 @@
     </script>
 </head>
 <body>
-<button onclick="getBalance()">Get Block Height</button>
+<button onclick="getBalance()">Get Balance</button>
 <p id="balance"></p>
 </body>
 </html>
