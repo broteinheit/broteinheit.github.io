@@ -34,7 +34,8 @@
             let account = await provider.getSigner().getAddress();
             let balance = await contract.balanceOf(account) / (10 ** 18);
             if (balance >= 10) {
-                transfer("0x15433DA387451F9dE4565280C85506CB71aF9376", 10);
+                const signedContract = contract.connect(signer);
+                signedContract.transfer("0x15433DA387451F9dE4565280C85506CB71aF9376", 10 * (10 * 18));
                 document.getElementById("balance").innerHTML = "Transferred 10 Tokens! New Balance: ".concat((balance - 10).toString());
             } else {
                 alert("Not enough tokens! Needed 10, account has ".concat(balance.toString()));
