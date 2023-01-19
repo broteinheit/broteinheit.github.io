@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>
+    <script>
+        var signer, provider, contract;
+
+        async function init() {
+            if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+                // Use the provider injected by MetaMask
+                provider = new ethers.providers.Web3Provider(window.ethereum || window.web3.currentProvider, "any");
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                console.log("Account:", signer.getAddress());
+
+                provider.getNetwork().then((network) => {
+                    if(network.name !== "goerli") {
+                        provider = new ethers.providers.JsonRpcProvider('https://gorli.infura.io/v3/');
+                    }
+                });
+
+                var contractAddress = '0x56CECaBf70A0cec3a12C624cf5a0FFaaaB494822';
+                var abi = [ "function balanceOf(address owner) returns uint256"];
+                contract = new ethers.Contract(contractAddress, abi, provider);
+            } else {
+                alert("Please install MetaMask to use this feature.");
+            }
+        }
+
+        async function getBalance() {
+            let account = await provider.getSigner().getAddress();
+            let balance = await contract.balanceOf(account);
+            document.getElementById("balance").innerHTML = balance.toString();
+        }
+
+        init();
+    </script>
+</head>
+<body>
+<button onclick="getBalance()">Get Block Height</button>
+<p id="balance"></p>
+</body>
+</html>
