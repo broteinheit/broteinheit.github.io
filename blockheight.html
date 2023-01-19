@@ -25,6 +25,7 @@
 
         async function getBlockHeight() {
             if (provider) {
+                console.log(provider);
                 let blockHeight = await provider.getBlockNumber();
                 document.getElementById("blockHeight").innerHTML = blockHeight;
             } else {
