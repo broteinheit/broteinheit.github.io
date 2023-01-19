@@ -32,7 +32,7 @@
         async function getBalance() {
             let account = await provider.getSigner().getAddress();
             let balance = await contract.balanceOf(account);
-            document.getElementById("balance").innerHTML = balance.toString();
+            document.getElementById("balance").innerHTML = (balance / (10 ** 18)).toString();
         }
 
         init();
